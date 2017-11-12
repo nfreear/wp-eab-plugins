@@ -1,0 +1,38 @@
+/*!
+  © Nick Freear, 06-November-2017.
+*/
+
+
+.post-type-eab_bulletin #insert-media-button,
+.post-type-eab_bulletin #qt_content_em,
+.post-type-eab_bulletin #qt_content_del,
+.post-type-eab_bulletin #qt_content_ins,
+.post-type-eab_bulletin #qt_content_img,
+.post-type-eab_bulletin #qt_content_code,
+.post-type-eab_bulletin .mce-menu #mceu_62,
+.post-type-eab_bulletin .mce-menu #mceu_66,
+.post-type-eab_bulletin .mce-menu #mceu_67,
+.post-type-eab_bulletin .mce-menu #mceu_68,
+.post-type-eab_bulletin div[ aria-label = 'Italic' ],
+.post-type-eab_bulletin div[ aria-label = 'Align left' ],
+.post-type-eab_bulletin div[ aria-label = 'Align center' ],
+.post-type-eab_bulletin div[ aria-label = 'Align right' ],
+.post-type-eab_bulletin div[ aria-label = 'Toolbar Toggle' ],
+.post-type-eab_bulletin .mce-toolbar.mce-last {
+  display: none;
+}
+
+.post-type-eab_bulletin #eab_issue_num hr {
+  margin: 2em 0;
+}
+
+.menu-icon-eab_bulletin .wp-menu-image:before {
+  /* https://developer.wordpress.org/resource/dashicons/#!-dashicons-star-filled--uf155
+  */
+  content: '\f155';
+
+  /*
+  font: .8rem Georgia, sans-serif;
+  content: 'EAB';
+  */
+}

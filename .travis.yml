@@ -1,0 +1,30 @@
+# Travis-CI + PHP + Node.JS testing.
+language: php
+php:
+  - 7.0
+
+git:
+  depth: 8
+
+env:
+  - TRAVIS_NODE_VERSION="6"
+
+before_install:
+  - nvm install v6
+  - npm install npm -g
+  - npm --version
+
+install:
+  - composer install
+  - composer npm-install
+
+script:
+  - composer test
+  # npm WARN engine eslint@3.12.1: wanted: {"node":">=4"} (current: {"node":"0.10.36","npm":"1.4.28"})
+
+after_script:
+  # Work-in-progress!
+  - composer semi
+  - composer cs
+
+#End.

@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: EAB Post-Type
- * Plugin URI:  https://gist.github.com/nfreear
+ * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
  * Description: Post type for the E-Access Bulletin.
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
@@ -11,6 +11,7 @@
  * @copyright © 2017 Nick Freear.
  * @author    Nick Freear, 06-November-2017.
  *
+ * @link  https://gist.github.com/nfreear/3fecaac8059cc351583c6e8f50d1cf7c
  * @link  https://github.com/IET-OU/wp-juxtalearn-hub/blob/master/post-types/student_problem.php
  * @link  http://headstar.com/eab/issues/2017/oct2017.html
  */

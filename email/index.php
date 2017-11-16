@@ -23,8 +23,6 @@ if ( ! is_user_logged_in() ) {
 
 $post_id = filter_input( INPUT_GET, 'post_id', FILTER_VALIDATE_INT );
 
-// global $post;
-
 $post = get_post( $post_id );
 
 if ( ! $post ) {
@@ -38,22 +36,8 @@ if ( ! $post ) {
 $wp_query = new WP_Query();
 $result   = $wp_query->setup_postdata( $post );
 
-// var_dump( $result );
-// if ( have_posts() ) : while ( have_posts() ) : the_post();
+// var_dump( $result, $post );
 
-// var_dump( $post );
-
-// $post->post_title_filtered = apply_filters( 'the_title', $post->post_title );
-// $post->post_content_filtered = apply_filters( 'the_content', $post->post_content );
-
-// echo $post->post_title_filtered;
-// echo $post->post_content_filtered;
-
-echo '<h1 style="color: darkorange">[ A work in progress! ]</h1>';
-
-the_title();
-the_content();
-
-// endwhile; endif;
+require __DIR__ . '/email-template-html.php';
 
 // End.

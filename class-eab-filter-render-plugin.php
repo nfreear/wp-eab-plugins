@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: EAB Filters
- * Plugin URI:  https://gist.github.com/nfreear
+ * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
  * Description: Filters and rendering for the E-Access Bulletin.
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
@@ -19,8 +19,12 @@ class EAB_Filter_Render_Plugin {
 	const POST_TYPE = 'eab_bulletin';
 
 	const ISSN    = 'ISSN: 1476-6337';
-	const TITLE   = 'E-Access Bulletin - Issue {{ISSUE}}, {{TITLE}}';
+	const TITLE   = 'E-Access Bulletin – Issue {{ISSUE}}, {{TITLE}}';
 	const TAGLINE = 'Access to technology for all, regardless of ability.';
+  const EMAIL   = 'eaccessbulletin@gmail.com';
+	const LIST_URL = 'https://lists.headstar.com';
+	const HOME_URL = 'http://headstar.com/eablive';
+	const ARCHIVE_URL = 'http://headstar.com/eab/archive.html';
 
 	public function __construct() {
 		// add_action( 'init', [ &$this, 'init' ]);
@@ -37,14 +41,11 @@ class EAB_Filter_Render_Plugin {
 				'{{EAB_ISSUE}}'   => 'Issue ' . $issue_num,
 				'{{EAB_ISSN}}'    => sprintf( '<em class="issn">%s.</em>', self::ISSN ),
 				'{{EAB_TAGLINE}}' => sprintf( '<em class="tagline">%s.</em>', self::TAGLINE ),
+				'{{EMAIL}}'       => sprintf( '<a href="mailto:%s">%s</a>', self::EMAIL, self::EMAIL ),
+				'{{LIST_URL}}'    => sprintf( '<a href="%s">%s</a>', self::LIST_URL, self::LIST_URL ),
+				'{{ARCHIVE_URL}}' => sprintf( '<a href="%s">%s</a>', self::ARCHIVE_URL, self::ARCHIVE_URL ),
 			]
 		);
-
-		/*
-		$content = str_replace( '{{EAB_ISSUE}}', 'Issue ' . $issue_num, $content );
-		$content = str_replace( '{{EAB_ISSN}}', '<em class="issn">ISSN 1476-6337.</em>', $content );
-		$content = str_replace( '{{EAB_TAGLINE}}', self::TAGLINE );
-		*/
 
 		return $content;
 	}

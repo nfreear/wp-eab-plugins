@@ -2,6 +2,8 @@
 [![E-Access Bulletin][eab-logo-1]][eab]
 
 [![Build status: Travis-CI][travis-icon]][travis-ci]
+[![js-semistandard-style][semi-icon]][semi]
+[![WordPress code standard][wp-icon]][wp]
 
 # wp-eab-plugins #
 
@@ -38,6 +40,12 @@ _(E-Access Bulletin: © 2017 Headstar Ltd.)_
 [gh]: https://github.com/nfreear/wp-eab-plugins
 [travis-ci]: https://travis-ci.org/nfreear/wp-eab-plugins "Build status – Travis-CI"
 [travis-icon]: https://travis-ci.org/nfreear/wp-eab-plugins.svg?branch=master
+[semi]: https://github.com/Flet/semistandard "Javascript coding style — 'semistandard'"
+[semi-icon]: https://img.shields.io/badge/code_style-semistandard-brightgreen.svg?_style=flat-square
+[wp]: https://packagist.org/packages/wp-coding-standards/wpcs
+[wp-gh]: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+[wp-icon]: https://img.shields.io/badge/code_style-WordPress-blue.svg
+[wp-pl-ico]: https://img.shields.io/badge/WordPress-plugin-blue.svg
 [eab-logo-1]: http://www.headstar.com/images/EAB-logo-small-trans.png
 [hed]: https://github.com/nfreear/headstar-web "Legacy archive, and Perl code-base."
 [sub]: http://headstar.com/eablive/?page_id=80

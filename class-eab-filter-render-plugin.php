@@ -36,7 +36,7 @@ class EAB_Filter_Render_Plugin {
 	const ARCHIVE_URL = 'http://headstar.com/eablive/?p=1419';  // '?page_id=1419'
 	// const ARCHIVE_URL = 'http://headstar.com/eab/archive.html';
 
-	protected $is_text = false;
+	protected static $is_text = false;
 
 	public function __construct() {
 		// add_action( 'init', [ &$this, 'init' ]);
@@ -46,7 +46,7 @@ class EAB_Filter_Render_Plugin {
 
 		$format = filter_input( INPUT_GET, 'format', FILTER_SANITIZE_URL );
 
-		$this->is_text = $format && preg_match( '/^(te?xt|md)$/', $format );
+		self::$is_text = $format && preg_match( '/^(te?xt|md)$/', $format );
 	}
 
 	public function the_content_filter( $content ) {
@@ -58,26 +58,17 @@ class EAB_Filter_Render_Plugin {
 				'{{EAB_ISSN}}'     => sprintf( '<em class="issn">%s.</em>', self::ISSN ),
 				'{{EAB_TAGLINE}}'  => sprintf( '<em class="tagline">%s.</em>', self::TAGLINE ),
 				'{{EMAIL}}'        => sprintf( '<a href="mailto:%s">%s</a> ', self::EMAIL, self::EMAIL ),
-				'{{TEN_LINK}}'     => sprintf( '<a href="%s">%s</a> ', self::TEN_URL, self::txt( 'TEN_URL' ) ),
-				'{{HOME_LINK}}'    => sprintf( '<a href="%s">%s</a> ', self::HOME_URL, self::txt( 'HOME_URL' ) ),
-				'{{LIST_LINK}}'    => sprintf( '<a href="%s">%s</a> ', self::LIST_URL, self::txt( 'LIST_URL' ) ),
-				'{{ARCHIVE_LINK}}' => sprintf( '<a href="%s">%s</a> ', self::ARCHIVE_URL, self::txt( 'ARCHIVE_URL' ) ),
+				'{{TEN_LINK}}'     => self::link( 'TEN_URL' ),
+				'{{HOME_LINK}}'    => self::link( 'HOME_URL' ),
+				'{{LIST_LINK}}'    => self::link( 'LIST_URL' ),
+				'{{ARCHIVE_LINK}}' => self::link( 'ARCHIVE_URL' ),
 				'{{TOC_LINK}}'     => self::TOC_LINK,
 			]
 		);
 
-		if ( $this->is_text && self::is_bulletin() ) {
-			$converter = new HtmlConverter(
-				[
-					'strip_tags'   => true,
-					'header_style' => 'atx',
-				]
-			);
+		$content = self::readable_html_links( $content );
 
-			$markdown = $converter->convert( $content );
-
-			return wordwrap( $markdown, self::TEXT_WRAP );
-		}
+		$content = self::html_to_markdown( $content );
 
 		return $content;
 	}
@@ -98,8 +89,36 @@ class EAB_Filter_Render_Plugin {
 
 	// ======================================================
 
-	protected static function txt( $key ) {
-		return preg_replace( [ '/https?:\/\//', '/\/$/' ], '', constant( 'self::' . $key ) );
+	protected static function link( $key ) {
+		$url = constant( 'self::' . $key );
+		return sprintf( '<a href="%s">%s</a> ', $url, $url );
+	}
+
+	protected static function html_to_markdown( $content ) {
+		if ( self::$is_text && self::is_bulletin() ) {
+			$converter = new HtmlConverter(
+				[
+					'strip_tags'   => true,
+					'header_style' => 'atx',
+				]
+			);
+
+			$markdown = $converter->convert( $content );
+
+			return wordwrap( $markdown, self::TEXT_WRAP );
+		}
+
+		return $content;
+	}
+
+	protected static function readable_html_links( $content ) {
+		if ( ! self::$is_text ) {
+			$content = preg_replace(
+				'/<(a[^>]+)>https?:\/\/([^<]+?)\/?<\/a>/', '<$1>$2</a>', $content
+			);
+		}
+
+		return $content;
 	}
 
 	protected static function is_bulletin() {

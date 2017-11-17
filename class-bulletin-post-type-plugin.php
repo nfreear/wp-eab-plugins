@@ -21,6 +21,7 @@ class Bulletin_Post_Type_Plugin {
 	const POST_TYPE    = 'eab_bulletin';
 	const ARCHIVE_SLUG = 'issues/';
 	const EDITOR_URL   = '/wp-admin/post.php?post=%s&action=edit';
+	const ISSUE_FIELD  = 'eab_issue_num';
 	const LOC_DOMAIN   = 'eab-bulletin';
 
 	public function __construct() {
@@ -83,20 +84,22 @@ class Bulletin_Post_Type_Plugin {
 	}
 
 	public function admin_init() {
-		add_meta_box( 'eab_issue_num', 'Bulletin issue number', [ &$this, 'issue_num_meta' ], self::POST_TYPE, 'side', 'low' );
+		add_meta_box(
+			self::ISSUE_FIELD, 'Bulletin issue number', [ &$this, 'issue_num_meta' ], self::POST_TYPE, 'side', 'low'
+		);
 	}
 
 	public function issue_num_meta() {
 		?>
 		<label>Issue number
 		<input name="eab_issue_num" value="<?php echo self::get_issue_num(); ?>"
-			placeholder="111" pattern="\d{3,4}" data-type="number" title="A number, e.g. '195'" />
-	  </label>
+			placeholder="'111'" pattern="\d{3,4}" data-type="number" title="A number, e.g. '195'" />
+		</label>
 
 		<p><hr />
 		<ul id="eab-editor-links">
-		<li><a href="<?php echo self::html_email_url(); ?>" target="_blank">HTML email (new window)</a></li>
-		<li><a href="<?php echo self::html_email_url( false ); ?>" target="_blank" title="Markdown">Text email (new window)</a></li>
+		<li><a href="<?php echo self::email_url(); ?>" target="_blank">HTML email (new window)</a></li>
+		<li><a href="<?php echo self::email_url( false ); ?>" target="_blank" title="Markdown">Text email (new window)</a></li>
 		<li><a href="<?php echo self::edit_template_url(); ?>">Edit Bulletin template</a></li>
 		</ul>
 		<?php
@@ -107,9 +110,7 @@ class Bulletin_Post_Type_Plugin {
 	public function save_post() {
 		global $post;
 
-		// $post->post_name = preg_replace( '/[\d ]+/', '', $post->post_name );
-
-		update_post_meta( $post->ID, 'eab_issue_num', filter_input( INPUT_POST, 'eab_issue_num' ) );
+		update_post_meta( $post->ID, self::ISSUE_FIELD, filter_input( INPUT_POST, self::ISSUE_FIELD ) );
 	}
 
 	// ======================================================
@@ -134,10 +135,10 @@ class Bulletin_Post_Type_Plugin {
 			'template_date'     => $post->post_date,
 			'default_title'     => date( 'F Y' ),
 			'default_name'      => strtolower( date( 'F' ) ),
-			'slug'              => '/' . self::ARCHIVE_SLUG . strtolower( date( 'Y/M' ) ) . '.html',
+			'slug'              => '/' . self::ARCHIVE_SLUG . strtolower( date( 'Y/M' ) ),
 			'site_url'          => get_site_url(),
 			'edit_template_url' => self::edit_template_url(),
-			'html_email_url'    => self::html_email_url(),
+			'html_email_url'    => self::email_url(),
 		];
 	}
 
@@ -149,7 +150,7 @@ class Bulletin_Post_Type_Plugin {
 		return constant( 'EAB_TEMPLATE_ID' );
 	}
 
-	protected static function html_email_url( $is_html = true ) {
+	protected static function email_url( $is_html = true ) {
 		global $post;
 
 		$params = sprintf( '?post_id=%d&%s', $post->ID, $is_html ? '' : 'format=txt' );
@@ -160,7 +161,7 @@ class Bulletin_Post_Type_Plugin {
 	protected static function get_issue_num() {
 		$custom_data = get_post_custom();
 
-		return $custom_data['eab_issue_num'][0];
+		return $custom_data[ self::ISSUE_FIELD ][0];
 	}
 }
 

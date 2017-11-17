@@ -7,9 +7,9 @@
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
  * Version:     1.0-alpha
+ * Text Domain: eab-bulletin
  *
- * @copyright © 2017 Nick Freear.
- * @author    Nick Freear, 06-November-2017.
+ * @copyright © Nick Freear, 06-November-2017.
  *
  * @link  https://gist.github.com/nfreear/3fecaac8059cc351583c6e8f50d1cf7c
  * @link  https://github.com/IET-OU/wp-juxtalearn-hub/blob/master/post-types/student_problem.php
@@ -19,14 +19,9 @@
 class Bulletin_Post_Type_Plugin {
 
 	const POST_TYPE    = 'eab_bulletin';
-	const ARCHIVE_SLUG = 'issues';
+	const ARCHIVE_SLUG = 'issues/';
+	const EDITOR_URL   = '/wp-admin/post.php?post=%s&action=edit';
 	const LOC_DOMAIN   = 'eab-bulletin';
-
-	const SINGULAR = 'EAB Bulletin';
-	const PLURAL   = 'EAB Bulletins';
-	const LONG     = 'E-Access Bulletin';
-
-	const EDITOR_URL = '/wp-admin/post.php?post=%s&action=edit';
 
 	public function __construct() {
 		add_action( 'init', [ &$this, 'init' ] );
@@ -45,28 +40,27 @@ class Bulletin_Post_Type_Plugin {
 	}
 
 	public function init() {
-		// add_rewrite_rule();
+		$tx_long   = __( 'E-Access Bulletin', 'eab-bulletin' );
+		$tx_name   = __( 'EAB Bulletin', 'eab-bulletin' );
+		$tx_plural = __( 'EAB Bulletins', 'eab-bulletin' );
 
 		register_post_type(
 			self::POST_TYPE, [
-				/* 'labels' => [
-				'name' => __(sprintf('%ss', ucwords(str_replace("_", " ", self::POST_TYPE)))),
-				'singular_name' => __(ucwords(str_replace("_", " ", self::POST_TYPE)))
-				], */
 				'labels'           => [
-					'name'               => __( self::PLURAL, self::LOC_DOMAIN ),
-					'singular_name'      => __( self::SINGULAR, self::LOC_DOMAIN ),
-					'add_new'            => __( 'Add New', self::LOC_DOMAIN ), //sprintf('Add New %s', self::SINGULAR)
-					'add_new_item'       => __( sprintf( 'Add new %s', self::LONG ), self::LOC_DOMAIN ),
-					'edit_item'          => __( sprintf( 'Edit %s', self::LONG ), self::LOC_DOMAIN ),
-					'new_item'           => __( sprintf( 'New %s', self::LONG ), self::LOC_DOMAIN ),
-					'view_item'          => __( sprintf( 'View %s', self::SINGULAR ), self::LOC_DOMAIN ),
-					'search_items'       => __( sprintf( 'Search %s', self::PLURAL ), self::LOC_DOMAIN ),
-					'not_found'          => __( sprintf( 'No %s found', self::PLURAL ), self::LOC_DOMAIN ),
-					'not_found_in_trash' => __( sprintf( 'Not found in Trash: %s', self::PLURAL ), self::LOC_DOMAIN ),
+					'name'               => $tx_plural,
+					'singular_name'      => $tx_name,
+					'add_new'            => _x( 'Add New', 'Add new EAB Bulletin', 'eab-bulletin' ),
+					// translators: 'Add new E-Access Bulletin'.
+					'add_new_item'       => sprintf( __( 'Add new %s', 'eab-bulletin' ), $tx_long ),
+					'edit_item'          => sprintf( __( 'Edit %s', 'eab-bulletin' ), $tx_long ),
+					'new_item'           => sprintf( __( 'New %s', 'eab-bulletin' ), $tx_long ),
+					'view_item'          => sprintf( __( 'View %s', 'eab-bulletin' ), $tx_name ),
+					'search_items'       => sprintf( __( 'Search %s', 'eab-bulletin' ), $tx_plural ),
+					'not_found'          => sprintf( __( 'No %s found', 'eab-bulletin' ), $tx_plural ),
+					'not_found_in_trash' => sprintf( __( 'Not found in Trash: %s', 'eab-bulletin' ), $tx_long ),
 				],
+				'description'      => __( 'An E-Access Bulletin.', 'eab-bulletin' ),
 				'public'           => true,
-				'description'      => __( 'An E-Access Bulletin', self::LOC_DOMAIN ),
 				'supports'         => [
 					'title',
 					'editor',
@@ -75,13 +69,13 @@ class Bulletin_Post_Type_Plugin {
 				'has_archive'      => true,
 				'delete_with_user' => false,
 				'rewrite'          => [
-					'slug'       => self::ARCHIVE_SLUG . strtolower( date( '/Y' ) ),
+					'slug'       => self::ARCHIVE_SLUG . strtolower( date( 'Y' ) ),
 					'with_front' => false,
 				],
 				'capability_type'  => 'post',
 				'show_ui'          => true,
 				'menu_position'    => 5,
-				// 'menu_icon' => JUXTALEARN_HUB_URL.'/images/icons/example.png',
+				// 'menu_icon' => EAB_HUB_URL.'/images/icons/example.png',
 			]
 		);
 		/* IMPORTANT: Only use once if you have too, see important note at the top of the page for details.  */
@@ -93,21 +87,21 @@ class Bulletin_Post_Type_Plugin {
 	}
 
 	public function issue_num_meta() {
-	?>
-	<label>Issue number
-	<input name="eab_issue_num" value="<?php echo self::get_issue_num(); ?>"
-	  placeholder="111" pattern="\d{3,4}" data-type="number" title="A number, e.g. '195'" />
-  </label>
+		?>
+		<label>Issue number
+		<input name="eab_issue_num" value="<?php echo self::get_issue_num(); ?>"
+			placeholder="111" pattern="\d{3,4}" data-type="number" title="A number, e.g. '195'" />
+	  </label>
 
-	<p><hr />
-  <ul id="eab-editor-links">
-  <li><a href="<?php echo self::html_email_url(); ?>" target="_blank">HTML email (new window)</a>
-	<li><a href="<?php echo self::html_email_url( false ); ?>" target="_blank" title="Markdown">Text email (new window)</a>
-  <li><a href="<?php echo self::edit_template_url(); ?>">Edit Bulletin template</a>
-  </ul>
-	<?php
+		<p><hr />
+		<ul id="eab-editor-links">
+		<li><a href="<?php echo self::html_email_url(); ?>" target="_blank">HTML email (new window)</a></li>
+		<li><a href="<?php echo self::html_email_url( false ); ?>" target="_blank" title="Markdown">Text email (new window)</a></li>
+		<li><a href="<?php echo self::edit_template_url(); ?>">Edit Bulletin template</a></li>
+		</ul>
+		<?php
 
-	  self::print_template_json();
+		self::print_template_json();
 	}
 
 	public function save_post() {
@@ -115,7 +109,7 @@ class Bulletin_Post_Type_Plugin {
 
 		// $post->post_name = preg_replace( '/[\d ]+/', '', $post->post_name );
 
-		update_post_meta( $post->ID, 'eab_issue_num', filter_input( INPUT_POST, 'eab_issue_num' ) ); // $_POST['eab_issue_num']
+		update_post_meta( $post->ID, 'eab_issue_num', filter_input( INPUT_POST, 'eab_issue_num' ) );
 	}
 
 	// ======================================================
@@ -140,7 +134,7 @@ class Bulletin_Post_Type_Plugin {
 			'template_date'     => $post->post_date,
 			'default_title'     => date( 'F Y' ),
 			'default_name'      => strtolower( date( 'F' ) ),
-			'slug'              => '/' . self::ARCHIVE_SLUG . strtolower( date( '/Y/M' ) ) . '.html',
+			'slug'              => '/' . self::ARCHIVE_SLUG . strtolower( date( 'Y/M' ) ) . '.html',
 			'site_url'          => get_site_url(),
 			'edit_template_url' => self::edit_template_url(),
 			'html_email_url'    => self::html_email_url(),

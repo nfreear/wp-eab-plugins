@@ -5,48 +5,48 @@
 window.jQuery(function ($) {
   'use strict';
 
-  var $eab_admin_page = $('.wp-admin.post-type-eab_bulletin');
-  var $eab_json = $('#eab-admin-json');
+  var $eabAdminPage = $('.wp-admin.post-type-eab_bulletin');
+  var $eabJson = $('#eab-admin-json');
 
-  var $editor = $eab_admin_page.find('.wp-editor-area');
-  var $post_title = $eab_admin_page.find('input[ name = post_title ]');
-  var $post_name = $eab_admin_page.find('input[ name = post_name ]');
-  // var $slug = $eab_admin_page.find('#edit-slug-box a');
+  var $editor = $eabAdminPage.find('.wp-editor-area');
+  var $postTitle = $eabAdminPage.find('input[ name = post_title ]');
+  var $postName = $eabAdminPage.find('input[ name = post_name ]');
+  // var $slug = $eabAdminPage.find('#edit-slug-box a');
 
-  var config = JSON.parse($eab_json.text() || null); // '{}');
+  var config = JSON.parse($eabJson.text() || null); // '{}');
 
-  $post_title.attr({
+  $postTitle.attr({
     pattern: '[A-Z][a-z]+ 20\\d{2}',
     title: "Month YEAR, for example, 'November 2017'"
   });
 
   if (config && config.use_template) {
     if (!$editor.val()) { $editor.val(config.template); }
-    if (!$post_title.val()) { $post_title.val(config.default_title); }
-    if (!$post_name.val()) { $post_name.val(config.default_name); }
+    if (!$postTitle.val()) { $postTitle.val(config.default_title); }
+    if (!$postName.val()) { $postName.val(config.default_name); }
 
     // $slug.text(config.site_url + config.slug);
   }
 
-  label_editor_menu_items($);
+  labelEditorMenuItems($);
 
   console.warn('eab.', $editor, config);
 });
 
-function label_editor_menu_items ($) {
+function labelEditorMenuItems ($) {
   if ($) return;
 
   window.setTimeout(function () {
-    var $eab_admin_page = $('.wp-admin.post-type-eab_bulletin');
+    var $eabAdminPage = $('.wp-admin.post-type-eab_bulletin');
     var $btn = $('.mce-menubtn button');
     // var $menu_items = $('.mce-menu .mce-menu-item');
 
     console.warn('>> btn.', $btn); //, $menu_items);
 
-    $eab_admin_page.on('click', '.mce-menubtn button', function () {
-      var $menu_items = $('.mce-menu .mce-menu-item'); // $eab_admin_page.find('.mce-menu .mce-menu-item');
+    $eabAdminPage.on('click', '.mce-menubtn button', function () {
+      var $menuItems = $('.mce-menu .mce-menu-item'); // $eabAdminPage.find('.mce-menu .mce-menu-item');
 
-      $menu_items.each(function (idx, el) {
+      $menuItems.each(function (idx, el) {
         var $item = $(el);
         var text = $item.text().replace(/&nbsp;|\(.+/g, '');
 

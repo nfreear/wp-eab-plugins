@@ -8,9 +8,7 @@
  * Author URI:  https://github.com/nfreear
  * Version:     1.0-alpha
  *
- * @copyright © 2017 Nick Freear.
- * @author    Nick Freear, 11-November-2017.
- *
+ * @copyright © 2017 Nick Freear, 11-November-2017.
  * @link  http://headstar.com/eab/issues/2017/oct2017.html
  */
 
@@ -35,7 +33,8 @@ class EAB_Filter_Render_Plugin {
 	const TEN_URL     = 'http://headstar.com/ten';
 	const LIST_URL    = 'https://lists.headstar.com';
 	const HOME_URL    = 'http://headstar.com/eablive';
-	const ARCHIVE_URL = 'http://headstar.com/eab/archive.html';
+	const ARCHIVE_URL = 'http://headstar.com/eablive/?p=1419';  // '?page_id=1419'
+	// const ARCHIVE_URL = 'http://headstar.com/eab/archive.html';
 
 	protected $is_text = false;
 
@@ -59,10 +58,10 @@ class EAB_Filter_Render_Plugin {
 				'{{EAB_ISSN}}'     => sprintf( '<em class="issn">%s.</em>', self::ISSN ),
 				'{{EAB_TAGLINE}}'  => sprintf( '<em class="tagline">%s.</em>', self::TAGLINE ),
 				'{{EMAIL}}'        => sprintf( '<a href="mailto:%s">%s</a> ', self::EMAIL, self::EMAIL ),
-				'{{TEN_LINK}}'     => sprintf( '<a href="%s">%s</a> ', self::TEN_URL, self::TEN_URL ),
-				'{{HOME_LINK}}'    => sprintf( '<a href="%s">%s</a> ', self::HOME_URL, self::HOME_URL ),
-				'{{LIST_LINK}}'    => sprintf( '<a href="%s">%s</a> ', self::LIST_URL, self::LIST_URL ),
-				'{{ARCHIVE_LINK}}' => sprintf( '<a href="%s">%s</a> ', self::ARCHIVE_URL, self::ARCHIVE_URL ),
+				'{{TEN_LINK}}'     => sprintf( '<a href="%s">%s</a> ', self::TEN_URL, self::txt( 'TEN_URL' ) ),
+				'{{HOME_LINK}}'    => sprintf( '<a href="%s">%s</a> ', self::HOME_URL, self::txt( 'HOME_URL' ) ),
+				'{{LIST_LINK}}'    => sprintf( '<a href="%s">%s</a> ', self::LIST_URL, self::txt( 'LIST_URL' ) ),
+				'{{ARCHIVE_LINK}}' => sprintf( '<a href="%s">%s</a> ', self::ARCHIVE_URL, self::txt( 'ARCHIVE_URL' ) ),
 				'{{TOC_LINK}}'     => self::TOC_LINK,
 			]
 		);
@@ -98,6 +97,10 @@ class EAB_Filter_Render_Plugin {
 	}
 
 	// ======================================================
+
+	protected static function txt( $key ) {
+		return preg_replace( [ '/https?:\/\//', '/\/$/' ], '', constant( 'self::' . $key ) );
+	}
 
 	protected static function is_bulletin() {
 		return get_post_type() === self::POST_TYPE;

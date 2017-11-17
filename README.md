@@ -11,9 +11,9 @@ publishing the E-Access Bulletin, via email and the Web.
 > "_E-Access Bulletin is a free, monthly, text-only email newsletter on
 > technology access by those with disabilities and older people._"
 
-* [E-Access Bulletin][eab]
-* [E-Access Bulletin Live blog][eab live]
-* [Subscribe to the E-Access Bulletin newsletter][subs]
+* [E-Access Bulletin Live][eab live]
+* [E-Access Bulletin archive][eab]
+* [Subscribe to the E-Access Bulletin newsletter][sub]
 
 ## Install .. Test
 
@@ -30,7 +30,7 @@ composer test
 
 
 ---
-Code: Copyright © Nick Freear, 06-November-2017.
+WordPress plugins: Copyright © Nick Freear, 06-November-2017.
 
 _(E-Access Bulletin: © 2017 Headstar Ltd.)_
 

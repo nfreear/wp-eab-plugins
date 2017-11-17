@@ -10,6 +10,7 @@ window.jQuery(function ($) {
 
   var $editor = $eab_admin_page.find('.wp-editor-area');
   var $post_title = $eab_admin_page.find('input[ name = post_title ]');
+  var $post_name = $eab_admin_page.find('input[ name = post_name ]');
   // var $slug = $eab_admin_page.find('#edit-slug-box a');
 
   var config = JSON.parse($eab_json.text() || null); // '{}');
@@ -17,18 +18,19 @@ window.jQuery(function ($) {
   $post_title.attr({
     pattern: '[A-Z][a-z]+ 20\\d{2}',
     title: "Month YEAR, for example, 'November 2017'"
-  })
+  });
 
   if (config && config.use_template) {
-    if ($editor.val()) { $editor.val(config.template); }
-    if ($post_title.val()) { $post_title.val(config.default_title); }
+    if (!$editor.val()) { $editor.val(config.template); }
+    if (!$post_title.val()) { $post_title.val(config.default_title); }
+    if (!$post_name.val()) { $post_name.val(config.default_name); }
 
     // $slug.text(config.site_url + config.slug);
   }
 
   label_editor_menu_items($);
 
-  console.warn('eab.', $, config, $editor.val(), 1);
+  console.warn('eab.', $editor, config);
 });
 
 function label_editor_menu_items ($) {

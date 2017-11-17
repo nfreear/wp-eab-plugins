@@ -28,7 +28,7 @@
       "composer eslint && composer csslint"
     ],
     "cs": "phpcs --standard=WordPress-Core -v *.php email/*.php",
-    "fix": "phpcbf --standard=WordPress-Core *.php",
+    "fix": "phpcbf --standard=WordPress-Core *.php email/*.php",
     "csslint": "node_modules/.bin/csslint src && echo Ok css!",
     "eslint": "node_modules/.bin/eslint -c src/.eslintrc.json src && echo Ok eslint!",
     "semi": "node_modules/.bin/semistandard"

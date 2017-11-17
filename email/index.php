@@ -22,6 +22,8 @@ if ( ! is_user_logged_in() ) {
 }
 
 $post_id = filter_input( INPUT_GET, 'post_id', FILTER_VALIDATE_INT );
+$format  = filter_input( INPUT_GET, 'format', FILTER_SANITIZE_URL );
+$is_text = $format && preg_match( '/^(te?xt|md)$/', $format );
 
 $post = get_post( $post_id );
 
@@ -38,6 +40,22 @@ $result   = $wp_query->setup_postdata( $post );
 
 // var_dump( $result, $post );
 
-require __DIR__ . '/email-template-html.php';
+header( 'X-Link: ' . get_permalink() );
+// header( 'X-Guid: ' . get_the_guid() );
+
+if ( $is_text ) {
+	header( 'Content-Type: text/markdown; charset=utf-8' );
+	header( 'Content-Disposition: inline; filename=eab-bulletin.md' );
+
+	// echo trim( str_replace( home_url(), '', get_permalink() ), '/' );
+
+	echo '# ';
+	the_title();
+	echo "\n\n";
+
+	the_content();
+} else {
+	require __DIR__ . '/email-template-html.php';
+}
 
 // End.

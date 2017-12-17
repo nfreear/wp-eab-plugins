@@ -30,8 +30,33 @@
   */
   content: '\f155';
 
-  /*
-  font: .8rem Georgia, sans-serif;
-  content: 'EAB';
-  */
+  /* font: .8rem Georgia, sans-serif;
+  content: 'EAB'; */
+}
+
+.eab-editor-links a[ href ]:before {
+  color: #333;
+  float: left;
+  font: 400 20px/1 dashicons;
+  margin-right: 6px;
+  speak: none;
+
+  /* position: relative;
+  padding: 4px 0;
+  background-image: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+
+  text-align: center;
+  width: 1rem;
+}
+
+.eab-editor-links a[ href ]:before {
+  content: 'H';
+}
+.eab-editor-links a[ href *= edit ]:before {
+  content: "\f464";
+}
+.eab-editor-links a[ href *= txt ]:before {
+  content: 'T';
 }

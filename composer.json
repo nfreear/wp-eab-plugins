@@ -32,5 +32,8 @@
     "csslint": "node_modules/.bin/csslint src && echo Ok css!",
     "eslint": "node_modules/.bin/eslint -c src/.eslintrc.json src && echo Ok eslint!",
     "semi": "node_modules/.bin/semistandard"
+  },
+  "archive": {
+    "exclude": [ "node_modules", "vendor", ".travis.yml", "package*.json", "*.zip" ]
   }
 }

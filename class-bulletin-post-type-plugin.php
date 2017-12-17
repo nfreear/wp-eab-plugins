@@ -97,7 +97,7 @@ class Bulletin_Post_Type_Plugin {
 		</label>
 
 		<p><hr />
-		<ul id="eab-editor-links">
+		<ul class="eab-editor-links" role="navigation" aria-label="Bulletin editor links">
 		<li><a href="<?php echo self::email_url(); ?>" target="_blank">HTML email (new window)</a></li>
 		<li><a href="<?php echo self::email_url( false ); ?>" target="_blank" title="Markdown">Text email (new window)</a></li>
 		<li><a href="<?php echo self::edit_template_url(); ?>">Edit Bulletin template</a></li>
@@ -153,7 +153,7 @@ class Bulletin_Post_Type_Plugin {
 	protected static function email_url( $is_html = true ) {
 		global $post;
 
-		$params = sprintf( '?post_id=%d&%s', $post->ID, $is_html ? '' : 'format=txt' );
+		$params = sprintf( '?post_id=%d&format=%s', $post->ID, $is_html ? 'htm' : 'txt' );
 
 		return plugins_url( 'email/', __FILE__ ) . $params;
 	}

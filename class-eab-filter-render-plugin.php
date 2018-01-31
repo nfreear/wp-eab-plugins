@@ -70,6 +70,10 @@ class EAB_Filter_Render_Plugin {
 
 		$content = self::readable_html_links( $content );
 
+    $content = self::headings_remove_plus( $content );
+
+    $content = self::remove_messy_classnames( $content );
+
 		$content = self::html_to_markdown( $content );
 
 		return $content;
@@ -111,6 +115,26 @@ class EAB_Filter_Render_Plugin {
 		}
 
 		return $content;
+	}
+
+  protected static function remove_messy_classnames( $content ) {
+	  if ( ! self::$is_text ) {
+	    $content = preg_replace(
+        '/<p class="p\d">([^<]+)<\/p>/', '<p>$1</p>', $content
+      );
+	  }
+
+	  return $content;
+	}
+
+	protected static function headings_remove_plus( $content ) {
+	  if ( ! self::$is_text ) {
+	    $content = preg_replace(
+	      '/<(h\d)[^>]+>\++([^<]+)<\/(h\d)>/', '<$1>$2</$3>', $content
+      );
+	  }
+
+	  return $content;
 	}
 
 	protected static function readable_html_links( $content ) {

@@ -8,17 +8,19 @@
  * Author URI:  https://github.com/nfreear
  * Version:     1.0-alpha
  *
- * @copyright © 2017 Nick Freear, 11-November-2017.
+ * @copyright © Nick Freear, 11-November-2017.
  * @link  http://headstar.com/eab/issues/2017/oct2017.html
  */
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require_once __DIR__ . '/vendor/autoload.php';
-} else {
-	require_once __DIR__ . '/../../../vendor/autoload.php';
+if (defined( 'EAB_MARKDOWN' )) {
+  if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	  require_once __DIR__ . '/vendor/autoload.php';
+  } else {
+	  require_once __DIR__ . '/../../../vendor/autoload.php';
+  }
 }
 
-use League\HTMLToMarkdown\HtmlConverter;
+// use League\HTMLToMarkdown\HtmlConverter;
 
 class EAB_Filter_Render_Plugin {
 
@@ -95,8 +97,8 @@ class EAB_Filter_Render_Plugin {
 	}
 
 	protected static function html_to_markdown( $content ) {
-		if ( self::$is_text && self::is_bulletin() ) {
-			$converter = new HtmlConverter(
+		if ( self::$is_text && self::is_bulletin() && defined( 'EAB_MARKDOWN' ) ) {
+			$converter = new League\HTMLToMarkdown\HtmlConverter(
 				[
 					'strip_tags'   => true,
 					'header_style' => 'atx',

@@ -12,12 +12,12 @@
  * @link  http://headstar.com/eab/issues/2017/oct2017.html
  */
 
-if (defined( 'EAB_MARKDOWN' )) {
-  if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	  require_once __DIR__ . '/vendor/autoload.php';
-  } else {
-	  require_once __DIR__ . '/../../../vendor/autoload.php';
-  }
+if ( defined( 'EAB_MARKDOWN' ) ) {
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		require_once __DIR__ . '/vendor/autoload.php';
+	} else {
+		require_once __DIR__ . '/../../../vendor/autoload.php';
+	}
 }
 
 // use League\HTMLToMarkdown\HtmlConverter;
@@ -68,13 +68,15 @@ class EAB_Filter_Render_Plugin {
 			]
 		);
 
+		$content = self::remove_messy_classnames( $content );
+
 		$content = self::readable_html_links( $content );
 
-    $content = self::headings_remove_plus( $content );
-
-    $content = self::remove_messy_classnames( $content );
+		$content = self::headings_remove_plus( $content );
 
 		$content = self::html_to_markdown( $content );
+
+		$content = self::stop_cloudflare_email_obfus( $content );
 
 		return $content;
 	}
@@ -117,24 +119,32 @@ class EAB_Filter_Render_Plugin {
 		return $content;
 	}
 
-  protected static function remove_messy_classnames( $content ) {
-	  if ( ! self::$is_text ) {
-	    $content = preg_replace(
-        '/<p class="p\d">([^<]+)<\/p>/', '<p>$1</p>', $content
-      );
-	  }
+	// https://support.cloudflare.com/hc/en-us/articles/200170016-What-is-Email-Address-Obfuscation-
+	protected static function stop_cloudflare_email_obfus( $content ) {
+		if ( ! self::$is_text ) {
+			$content = "<!--email_off-->\n\n" . $content . "\n<!--/email_off-->";
+		}
+		return $content;
+	}
 
-	  return $content;
+	protected static function remove_messy_classnames( $content ) {
+		if ( ! self::$is_text ) {
+			$content = preg_replace( '/<span class="s\d">([^<]+)<\/span>/', '$1', $content );
+
+			$content = preg_replace(
+				'/<p class="p\d">([^<]+)<\/p>/', '<p>$1</p>', $content
+			);
+		}
+		return $content;
 	}
 
 	protected static function headings_remove_plus( $content ) {
-	  if ( ! self::$is_text ) {
-	    $content = preg_replace(
-	      '/<(h\d)[^>]+>\++([^<]+)<\/(h\d)>/', '<$1>$2</$3>', $content
-      );
-	  }
-
-	  return $content;
+		if ( ! self::$is_text ) {
+			$content = preg_replace(
+				'/<(h\d)[^>]+>\++([^<]+)<\/(h\d)>/', '<$1>$2</$3>', $content
+			);
+		}
+		return $content;
 	}
 
 	protected static function readable_html_links( $content ) {

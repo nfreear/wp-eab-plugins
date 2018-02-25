@@ -1,4 +1,4 @@
-<?php namespace Nfreear\WordPress\Plugins\GAAD;
+<?php // namespace Nfreear\WordPress\Plugins\GAAD;
 
 /**
  * Plugin Name: Global Accessibility Awareness Day widget
@@ -6,7 +6,7 @@
  * Description: Shortcode and functionality to embed the GAAD widget ~ http://globalaccessibilityawarenessday.org
  * Author:      Nick Freear
  * Author URI:  https://twitter.com/nfreear
- * Version:     2.2-alpha
+ * Version:     3.1.0-beta
  *
  * @package     Nfreear\WP_GAAD_Plugins
  * @license     https://nfreear.mit-license.org MIT License
@@ -18,18 +18,18 @@
 class GAAD_Widget_Plugin {
 
 	const SHORTCODE  = 'GAAD';
-	const TEMPLATE   = "<div id='id-gaad'></div>";
-	const VERSION    = '2.1-beta';
-	const SCRIPT_URL = 'https://cdn.rawgit.com/nfreear/gaad-widget/%s/build/GAAD.widget.js';
+	const TEMPLATE   = '<div id="id-gaad-widget"></div>';
+	const VERSION    = '3.1.0-beta';
+	const SCRIPT_URL = 'https://unpkg.com/gaad-widget@%s/build/gaad-widget.js';
 
 	private $wp_head = false;
 
 	public function __construct() {
 		$this->wp_head = self::get_option( 'gaad_widget_wp_head' );
 
-		add_shortcode( self::SHORTCODE, [ &$this, 'shortcode' ] );
-		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ] );
-		add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 10, 2 );
+		add_shortcode( self::SHORTCODE, array( &$this, 'shortcode' ) );
+		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ) );
+		add_filter( 'script_loader_tag', array( &$this, 'script_loader_tag' ), 10, 2 );
 
 		if ( $this->wp_head ) {
 			add_action( 'wp_head', [ &$this, 'wp_head' ] );
@@ -37,17 +37,17 @@ class GAAD_Widget_Plugin {
 	}
 
 	public function wp_head( $name ) {
-		self::debug( [ __FUNCTION__, $name ] );
+		self::debug( array( __FUNCTION__, $name ) );
 
 		echo self::TEMPLATE;
 	}
 
 	public function shortcode( $attrs = [], $content = null ) {
 		$inp = (object) shortcode_atts(
-			[
+			array(
 				'days_before' => self::get_option( 'gaad_widget_days_before', 15 ),
 				'days_after'  => self::get_option( 'gaad_widget_days_after', 10 ),
-			], $attrs
+			), $attrs
 		);
 
 		return self::TEMPLATE . $content;
@@ -58,16 +58,16 @@ class GAAD_Widget_Plugin {
 		$script_url = sprintf( self::SCRIPT_URL, $version );
 
 		self::debug(
-			[
+			array(
 				'fn'                  => __FUNCTION__,
 				'gaad_widget_version' => $version,
 				'wp_default_theme'    => self::get_option( 'wp_default_theme' ),
-			]
+			)
 		);
 
 		$ver = null;
 		$in_footer = true;
-		$result = wp_enqueue_script( 'gaad-widget', $script_url, [ 'jquery' ], $ver, $in_footer );
+		$result = wp_enqueue_script( 'gaad-widget', $script_url, array( 'jquery' ), $ver, $in_footer );
 
 		if ( ! $this->wp_head ) {
 			$tpl = addslashes( self::TEMPLATE );

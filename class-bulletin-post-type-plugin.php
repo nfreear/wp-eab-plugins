@@ -1,4 +1,4 @@
-<?php namespace Nfreear\WP_EAB_Plugins;
+<?php // namespace Nfreear\WP_EAB_Plugins;
 
 /**
  * Plugin Name: EAB Post-Type
@@ -9,6 +9,7 @@
  * Version:     1.0-alpha
  * Text Domain: eab-bulletin
  *
+ * @package Nfreear\WP_EAB_Plugins
  * @copyright © Nick Freear, 06-November-2017.
  *
  * @link  https://gist.github.com/nfreear/3fecaac8059cc351583c6e8f50d1cf7c
@@ -25,10 +26,10 @@ class Bulletin_Post_Type_Plugin {
 	const LOC_DOMAIN   = 'eab-bulletin';
 
 	public function __construct() {
-		add_action( 'init', [ &$this, 'init' ] );
-		add_action( 'admin_init', [ &$this, 'admin_init' ] );
-		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ] );
-		add_action( 'save_post', [ &$this, 'save_post' ] );
+		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_enqueue_scripts' ) );
+		add_action( 'save_post', array( &$this, 'save_post' ) );
 	}
 
 	public function admin_enqueue_scripts() {
@@ -36,7 +37,7 @@ class Bulletin_Post_Type_Plugin {
 		wp_enqueue_style( 'eab_admin_css' );
 
 		$in_footer = true;
-		wp_register_script( 'eab_admin_js', plugins_url( 'src/eab-admin.js', __FILE__ ), [], false, $in_footer );
+		wp_register_script( 'eab_admin_js', plugins_url( 'src/eab-admin.js', __FILE__ ), array(), false, $in_footer );
 		wp_enqueue_script( 'eab_admin_js' );
 	}
 
@@ -46,8 +47,8 @@ class Bulletin_Post_Type_Plugin {
 		$tx_plural = __( 'EAB Bulletins', 'eab-bulletin' );
 
 		register_post_type(
-			self::POST_TYPE, [
-				'labels'           => [
+			self::POST_TYPE, array(
+				'labels'           => array(
 					'name'               => $tx_plural,
 					'singular_name'      => $tx_name,
 					'add_new'            => _x( 'Add New', 'Add new EAB Bulletin', 'eab-bulletin' ),
@@ -59,25 +60,25 @@ class Bulletin_Post_Type_Plugin {
 					'search_items'       => sprintf( __( 'Search %s', 'eab-bulletin' ), $tx_plural ),
 					'not_found'          => sprintf( __( 'No %s found', 'eab-bulletin' ), $tx_plural ),
 					'not_found_in_trash' => sprintf( __( 'Not found in Trash: %s', 'eab-bulletin' ), $tx_long ),
-				],
+				),
 				'description'      => __( 'An E-Access Bulletin.', 'eab-bulletin' ),
 				'public'           => true,
-				'supports'         => [
+				'supports'         => array(
 					'title',
 					'editor',
 					/* 'excerpt',  'author', */ 'revisions',
-				],
+				),
 				'has_archive'      => true,
 				'delete_with_user' => false,
-				'rewrite'          => [
+				'rewrite'          => array(
 					'slug'       => self::ARCHIVE_SLUG . strtolower( date( 'Y' ) ),
 					'with_front' => false,
-				],
+				),
 				'capability_type'  => 'post',
 				'show_ui'          => true,
 				'menu_position'    => 5,
 				// 'menu_icon' => EAB_HUB_URL.'/images/icons/example.png',
-			]
+			)
 		);
 		/* IMPORTANT: Only use once if you have too, see important note at the top of the page for details.  */
 		// flush_rewrite_rules( false );
@@ -85,7 +86,7 @@ class Bulletin_Post_Type_Plugin {
 
 	public function admin_init() {
 		add_meta_box(
-			self::ISSUE_FIELD, 'Bulletin issue number', [ &$this, 'issue_num_meta' ], self::POST_TYPE, 'side', 'low'
+			self::ISSUE_FIELD, 'Bulletin issue number', array( &$this, 'issue_num_meta' ), self::POST_TYPE, 'side', 'low'
 		);
 	}
 
@@ -127,7 +128,7 @@ class Bulletin_Post_Type_Plugin {
 	protected static function get_template() {
 		$post = get_post( self::template_post_id() );
 
-		return [
+		return array(
 			'post_id'           => self::template_post_id(),
 			'use_template'      => ! ! $post,
 			'template'          => $post->post_content,
@@ -139,7 +140,7 @@ class Bulletin_Post_Type_Plugin {
 			'site_url'          => get_site_url(),
 			'edit_template_url' => self::edit_template_url(),
 			'html_email_url'    => self::email_url(),
-		];
+		);
 	}
 
 	protected static function edit_template_url() {

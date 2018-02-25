@@ -1,4 +1,4 @@
-<?php namespace Nfreear\WP_EAB_Plugins;
+<?php // namespace Nfreear\WP_EAB_Plugins;
 
 /**
  * Plugin Name: EAB Filters
@@ -8,6 +8,7 @@
  * Author URI:  https://github.com/nfreear
  * Version:     1.0-alpha
  *
+ * @package Nfreear\WP_EAB_Plugins
  * @copyright © Nick Freear, 11-November-2017.
  * @link  http://headstar.com/eab/issues/2017/oct2017.html
  */
@@ -43,8 +44,8 @@ class EAB_Filter_Render_Plugin {
 	public function __construct() {
 		// add_action( 'init', [ &$this, 'init' ]);
 
-		add_filter( 'the_content', [ &$this, 'the_content_filter' ] );
-		add_filter( 'the_title', [ &$this, 'the_title_filter' ] );
+		add_filter( 'the_content', array( &$this, 'the_content_filter' ) );
+		add_filter( 'the_title', array( &$this, 'the_title_filter' ) );
 
 		$format = filter_input( INPUT_GET, 'format', FILTER_SANITIZE_URL );
 
@@ -55,7 +56,7 @@ class EAB_Filter_Render_Plugin {
 		$issue_num = self::get_issue_num();
 
 		$content = strtr(
-			$content, [
+			$content, array(
 				'{{EAB_ISSUE}}'    => 'Issue ' . $issue_num,
 				'{{EAB_ISSN}}'     => sprintf( '<em class="issn">%s.</em>', self::ISSN ),
 				'{{EAB_TAGLINE}}'  => sprintf( '<em class="tagline">%s.</em>', self::TAGLINE ),
@@ -65,7 +66,7 @@ class EAB_Filter_Render_Plugin {
 				'{{LIST_LINK}}'    => self::link( 'LIST_URL' ),
 				'{{ARCHIVE_LINK}}' => self::link( 'ARCHIVE_URL' ),
 				'{{TOC_LINK}}'     => self::TOC_LINK,
-			]
+			)
 		);
 
 		$content = self::remove_messy_classnames( $content );
@@ -85,10 +86,10 @@ class EAB_Filter_Render_Plugin {
 
 		if ( self::is_bulletin() ) {
 			$title = strtr(
-				self::TITLE, [
+				self::TITLE, array(
 					'{{TITLE}}' => $title,
 					'{{ISSUE}}' => self::get_issue_num(),
-				]
+				)
 			);
 		}
 
@@ -105,10 +106,10 @@ class EAB_Filter_Render_Plugin {
 	protected static function html_to_markdown( $content ) {
 		if ( self::$is_text && self::is_bulletin() && defined( 'EAB_MARKDOWN' ) ) {
 			$converter = new League\HTMLToMarkdown\HtmlConverter(
-				[
+				array(
 					'strip_tags'   => true,
 					'header_style' => 'atx',
-				]
+				)
 			);
 
 			$markdown = $converter->convert( $content );

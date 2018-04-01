@@ -20,13 +20,15 @@ class Eab_Archive_Shortcode_Plugin {
 	const SHORTCODE = 'eab_archive';
 
 	// const POST_TYPE  = 'eab_bulletin';
-	const WP_QUERY   = 'post_type=eab_bulletin&year=2018';
-	const JSON_URL   = 'http://headstar.com/eab/index.json';
-	const START_YEAR = 2000;
+	const WP_QUERY       = 'post_type=eab_bulletin&year=2018';
+	const JSON_URL       = 'http://headstar.com/eab/index.json';
+	const START_YEAR     = 2000;
 	const SWITCH_LT_YEAR = 2018;
 
-	const IFRAME_URL = 'http://headstar.com/eab/archive.html?embed=1&site=eablive&hide-year-nav-etc=1';
-	const IFRAME_TPL = '<iframe src="{u}" width="100%" height="{h}" class="eab-archive-ifr" style="border:0"></iframe>';
+	const TEXT_URL = '/wp-content/plugins/wp-eab-bulletin/email/?n=%s&f=txt';
+
+	const IFRAME_URL    = 'http://headstar.com/eab/archive.html?embed=1&site=eablive&hide-year-nav-etc=1';
+	const IFRAME_TPL    = '<iframe src="{u}" width="100%" height="{h}" class="eab-archive-ifr" style="border:0"></iframe>';
 	const IFRAME_HEIGHT = 5400;
 
 	// 'E-Access Bulletin – Issue 197, February 2018'
@@ -75,7 +77,9 @@ class Eab_Archive_Shortcode_Plugin {
 			<li id="i<?php echo $pm->issue; ?>"
 				<?php echo $is_current ? 'title="current"><i id="current"></i>' : '>'; ?>
 				Issue <?php echo $pm->issue; ?>, <a href="<?php the_permalink(); ?>" class="htm"
-				title="<?php the_title(); ?>"><?php echo $pm->date; ?> HTML</a>.</li>
+				title="<?php the_title(); ?>"><?php echo $pm->date; ?> HTML</a>,
+		<a href="<?php self::text_url(); ?>"><?php echo $pm->date; ?> text</a>.
+			</li>
 <?php
 			// the_content();
 			$is_current = false;
@@ -88,9 +92,14 @@ class Eab_Archive_Shortcode_Plugin {
 		return ob_get_clean();
 	}
 
+	protected static function text_url() {
+		$slug = get_post_field( 'post_name', get_post() );
+		echo sprintf( self::TEXT_URL, $slug );
+	}
+
 	protected static function top_nav() {
 		ob_start();
-		require_once __DIR__ . '/template/archive-top-nav.tpl.php';
+		require_once dirname( __FILE__ ) . '/template/archive-top-nav.tpl.php';
 		return ob_get_clean();
 	}
 
@@ -103,10 +112,12 @@ class Eab_Archive_Shortcode_Plugin {
 	}
 
 	protected static function legacy_archive() {
-		$resp = wp_remote_get( self::JSON_URL, array(
-			'timeout' => 15,
-			'httpversion' => '1.1',
-		) );
+		$resp = wp_remote_get(
+			self::JSON_URL, array(
+				'timeout'     => 15,
+				'httpversion' => '1.1',
+			)
+		);
 		if ( is_wp_error( $resp ) ) {
 			return self::error( 'HTTP. ' . $resp->get_error_message() );
 		}
@@ -120,15 +131,17 @@ class Eab_Archive_Shortcode_Plugin {
 		}
 
 		ob_start();
-		require_once __DIR__ . '/template/eab-archive.tpl.php';
+		require_once dirname( __FILE__ ) . '/template/eab-archive.tpl.php';
 		return ob_get_clean();
 	}
 
 	protected static function legacy_iframe() {
-		return strtr( self::IFRAME_TPL, array(
-			'{u}' => self::IFRAME_URL,
-			'{h}' => self::IFRAME_HEIGHT,
-		) );
+		return strtr(
+			self::IFRAME_TPL, array(
+				'{u}' => self::IFRAME_URL,
+				'{h}' => self::IFRAME_HEIGHT,
+			)
+		);
 	}
 
 	protected static function lurl( $year, $file ) {

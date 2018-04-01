@@ -13,13 +13,13 @@
  * @link  http://headstar.com/eab/issues/2017/oct2017.html
  */
 
-if ( defined( 'EAB_MARKDOWN' ) ) {
+/* if ( defined( 'EAB_MARKDOWN' ) ) {
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		require_once __DIR__ . '/vendor/autoload.php';
 	} else {
 		require_once __DIR__ . '/../../../vendor/autoload.php';
 	}
-}
+} */
 
 // use League\HTMLToMarkdown\HtmlConverter;
 
@@ -104,7 +104,7 @@ class EAB_Filter_Render_Plugin {
 	}
 
 	protected static function html_to_markdown( $content ) {
-		if ( self::$is_text && self::is_bulletin() && defined( 'EAB_MARKDOWN' ) ) {
+		/* if ( self::$is_text && self::is_bulletin() && defined( 'EAB_MARKDOWN' ) ) {
 			$converter = new League\HTMLToMarkdown\HtmlConverter(
 				array(
 					'strip_tags'   => true,
@@ -115,7 +115,7 @@ class EAB_Filter_Render_Plugin {
 			$markdown = $converter->convert( $content );
 
 			return wordwrap( $markdown, self::TEXT_WRAP );
-		}
+		} */
 
 		return $content;
 	}
@@ -128,6 +128,9 @@ class EAB_Filter_Render_Plugin {
 		return $content;
 	}
 
+	/** TODO: more stuff to filter:
+	 *  lang="en-GB", style=".."
+	 */
 	protected static function remove_messy_classnames( $content ) {
 		if ( ! self::$is_text ) {
 			$content = preg_replace( '/<span class="s\d">([^<]+)<\/span>/', '$1', $content );

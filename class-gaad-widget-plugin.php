@@ -15,6 +15,10 @@
  * @link        http://globalaccessibilityawarenessday.org/
  */
 
+if ( ! function_exists( 'wp_add_inline_script' ) ) { // WP < v 4.5.0.
+	function wp_add_inline_script( $handle, $data, $position = 'after' ) {}
+}
+
 class GAAD_Widget_Plugin {
 
 	const SHORTCODE  = 'GAAD';
@@ -32,7 +36,7 @@ class GAAD_Widget_Plugin {
 		add_filter( 'script_loader_tag', array( &$this, 'script_loader_tag' ), 10, 2 );
 
 		if ( $this->wp_head ) {
-			add_action( 'wp_head', [ &$this, 'wp_head' ] );
+			add_action( 'wp_head', array( &$this, 'wp_head' ) );
 		}
 	}
 
@@ -42,7 +46,7 @@ class GAAD_Widget_Plugin {
 		echo self::TEMPLATE;
 	}
 
-	public function shortcode( $attrs = [], $content = null ) {
+	public function shortcode( $attrs = array(), $content = null ) {
 		$inp = (object) shortcode_atts(
 			array(
 				'days_before' => self::get_option( 'gaad_widget_days_before', 15 ),
@@ -65,9 +69,9 @@ class GAAD_Widget_Plugin {
 			)
 		);
 
-		$ver = null;
+		$ver       = null;
 		$in_footer = true;
-		$result = wp_enqueue_script( 'gaad-widget', $script_url, array( 'jquery' ), $ver, $in_footer );
+		$result    = wp_enqueue_script( 'gaad-widget', $script_url, array( 'jquery' ), $ver, $in_footer );
 
 		if ( ! $this->wp_head ) {
 			$tpl = addslashes( self::TEMPLATE );
@@ -81,12 +85,12 @@ class GAAD_Widget_Plugin {
 	public function script_loader_tag( $tag, $handle ) {
 		if ( 'gaad-widget' === $handle ) {
 			$json_opt = json_encode(
-				[
+				array(
 					'days_before' => self::get_option( 'gaad_widget_days_before', 15 ),
 					'days_after'  => self::get_option( 'gaad_widget_days_after', 10 ),
 					'theme'       => self::get_option( 'gaad_widget_theme', 'blue' ),
 					'client'      => 'WordPress',
-				]
+				)
 			);
 
 			return str_replace( '></sc', " data-gaad='$json_opt'><\/sc", $tag );

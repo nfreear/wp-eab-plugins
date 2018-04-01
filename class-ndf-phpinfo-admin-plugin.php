@@ -23,7 +23,7 @@ class Ndf_Phpinfo_Admin_Plugin {
 	}
 
 	public function admin_menu( $atts, $content = null ) {
-		add_options_page( 'Phpinfo', 'Phpinfo XX', 'manage_options', self::ID, array( &$this, 'options_page' ) );
+		add_options_page( 'Phpinfo', 'Phpinfo', 'manage_options', self::ID, array( &$this, 'options_page' ) );
 	}
 
 	public function options_page() {
@@ -43,10 +43,19 @@ class Ndf_Phpinfo_Admin_Plugin {
 		return ob_get_clean();
 	}
 
+	protected static $clean = array(
+		'<title>phpinfo()</title>',
+		'<html><head>',
+		'</head>',
+		'</html>',
+		'<body>',
+		'</body>',
+	);
+
 	protected static function clean_phpinfo( $phpinfo ) {
 		$phpinfo = preg_replace( '/<style.*<\/style>/ms', '', $phpinfo );
 		$phpinfo = preg_replace( '/<!D[^>]+>/', '', $phpinfo );
-		$phpinfo = str_replace( '<title>phpinfo()</title>', '', $phpinfo );
+		$phpinfo = str_replace( self::$clean, '', $phpinfo );
 		return $phpinfo;
 	}
 

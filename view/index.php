@@ -46,13 +46,13 @@ if ( ! $my_query->have_posts() ) {
 
 $my_query->the_post();
 
-if ( ! is_user_logged_in() ) {
+/* if ( ! is_user_logged_in() ) {
 	global $wp_query;
 	$wp_query->set_404();
 	status_header( 403 );
 	get_template_part( 403 );
 	exit;
-}
+} */
 
 header( 'X-Link: ' . get_permalink() );
 header( 'X-Guid: ' . get_the_guid() );
@@ -67,11 +67,11 @@ if ( EAB_IS_TEXT ) {
 	the_title();
 	echo "\n\n";
 
-	echo apply_filters( 'the_content_markdown', get_the_content(), get_permalink() );
+	echo apply_filters( 'the_content_markdown', get_the_content() );
 
-	//the_content();
+	// the_content();
 } else {
-	require __DIR__ . '/email-template-html.php';
+	require_once dirname( __FILE__ ) . '/email-template-html.php';
 }
 
 // End.

@@ -22,10 +22,11 @@ class Eab_Archive_Shortcode_Plugin {
 	// const POST_TYPE  = 'eab_bulletin';
 	const WP_QUERY       = 'post_type=eab_bulletin&year=2018';
 	const JSON_URL       = 'http://headstar.com/eab/index.json';
+	const LEGACY_URL     = 'http://headstar.com/eab/issues/%s/%s';
 	const START_YEAR     = 2000;
 	const SWITCH_LT_YEAR = 2018;
 
-	const TEXT_URL = '/wp-content/plugins/wp-eab-bulletin/view/?n=%s&f=txt';
+	const TEXT_URL = 'view/?n=%s&f=txt';
 
 	const IFRAME_URL    = 'http://headstar.com/eab/archive.html?embed=1&site=eablive&hide-year-nav-etc=1';
 	const IFRAME_TPL    = '<iframe src="{u}" width="100%" height="{h}" class="eab-archive-ifr" style="border:0"></iframe>';
@@ -72,15 +73,10 @@ class Eab_Archive_Shortcode_Plugin {
 
 			$pm = (object) $matches;
 
-			self::debug( $pm )
-			?>
-			<li id="i<?php echo $pm->issue; ?>"
-				<?php echo $is_current ? 'title="current"><i id="current"></i>' : '>'; ?>
-				Issue <?php echo $pm->issue; ?>, <a href="<?php the_permalink(); ?>" class="htm"
-				title="<?php the_title(); ?>"><?php echo $pm->date; ?> HTML</a>,
-		<a href="<?php self::text_url(); ?>"><?php echo $pm->date; ?> text</a>.
-			</li>
-<?php
+			self::debug( $pm );
+
+			require dirname( __FILE__ ) . '/template/eab-item.tpl.php';
+
 			// the_content();
 			$is_current = false;
 		endwhile;
@@ -94,7 +90,7 @@ class Eab_Archive_Shortcode_Plugin {
 
 	protected static function text_url() {
 		$slug = get_post_field( 'post_name', get_post() );
-		echo sprintf( self::TEXT_URL, $slug );
+		printf( plugins_url( self::TEXT_URL, __FILE__ ), $slug );
 	}
 
 	protected static function top_nav() {
@@ -145,11 +141,15 @@ class Eab_Archive_Shortcode_Plugin {
 	}
 
 	protected static function lurl( $year, $file ) {
-		echo "http://headstar.com/eab/issues/$year/$file";
+		printf( self::LEGACY_URL, $year, $file );
 	}
 
 	protected static function lname( $year, $mon_num ) {
-		echo date( 'F Y', mktime( null, null, null, $mon_num + 1, null, $year ) );
+		return date( 'F Y', mktime( null, null, null, $mon_num + 1, null, $year ) );
+	}
+
+	protected static function ltitle( $issue_num, $year, $mon_num ) {
+		printf( 'E-Access Bulletin - Issue %s, %s*', $issue_num, self::lname( $year, $mon_num ) );
 	}
 
 	protected static function debug( $obj ) {

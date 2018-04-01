@@ -27,11 +27,11 @@
     "test": [
       "parallel-lint --exclude vendor .",
       "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs/",
-      "phpcs --standard=WordPress-Core -n *.php email/*.php",
+      "phpcs --standard=WordPress-Core -n *.php view/*.php",
       "composer semi && composer eslint && composer csslint"
     ],
-    "cs": "phpcs --standard=WordPress-Core -v *.php email/*.php",
-    "fix": "phpcbf --standard=WordPress-Core *.php email/*.php",
+    "cs": "phpcs --standard=WordPress-Core -v *.php view/*.php",
+    "fix": "phpcbf --standard=WordPress-Core *.php view/*.php",
     "csslint": "node_modules/.bin/csslint src && echo Ok css!",
     "eslint": "node_modules/.bin/eslint -c src/.eslintrc.json src && echo Ok eslint!",
     "semi": "node_modules/.bin/semistandard"

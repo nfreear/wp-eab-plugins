@@ -25,7 +25,7 @@ class Eab_Archive_Shortcode_Plugin {
 	const START_YEAR     = 2000;
 	const SWITCH_LT_YEAR = 2018;
 
-	const TEXT_URL = '/wp-content/plugins/wp-eab-bulletin/email/?n=%s&f=txt';
+	const TEXT_URL = '/wp-content/plugins/wp-eab-bulletin/view/?n=%s&f=txt';
 
 	const IFRAME_URL    = 'http://headstar.com/eab/archive.html?embed=1&site=eablive&hide-year-nav-etc=1';
 	const IFRAME_TPL    = '<iframe src="{u}" width="100%" height="{h}" class="eab-archive-ifr" style="border:0"></iframe>';

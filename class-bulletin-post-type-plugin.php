@@ -1,12 +1,12 @@
 <?php // namespace Nfreear\WP_EAB_Plugins;
 
 /**
- * Plugin Name: EAB Post-Type
- * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
- * Description: Post type for the E-Access Bulletin.
+ * Plugin Name: EAB Post Type
+ * Plugin URI:  https://github.com/nfreear/wp-eab-plugins#post-type
+ * Description: The custom "post type" for the E-Access Bulletin.
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
- * Version:     1.0-alpha
+ * Version:     1.0.0-alpha
  * Text Domain: eab-bulletin
  *
  * @package Nfreear\WP_EAB_Plugins
@@ -154,9 +154,9 @@ class Bulletin_Post_Type_Plugin {
 	protected static function email_url( $is_html = true ) {
 		global $post;
 
-		$params = sprintf( '?post_id=%d&format=%s', $post->ID, $is_html ? 'htm' : 'txt' );
+		$view_url = sprintf( 'view/?post_id=%d&f=%s', $post->ID, $is_html ? 'html' : 'txt' ); // Was: '&format='
 
-		return plugins_url( 'email/', __FILE__ ) . $params;
+		return plugins_url( $view_url, __FILE__ );
 	}
 
 	protected static function get_issue_num() {

@@ -1,0 +1,23 @@
+# .htaccess
+#
+# https://codex.wordpress.org/htaccess
+# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewriterule
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /eablive
+
+  RewriteRule  ^bulletins/(\w+-20\d\d)\.(txt|html)  wp-content/plugins/wp-eab-bulletin/view/?n=$1&f=$2  [L]
+</IfModule>
+
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /eablive
+  RewriteRule ^index\.php$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress

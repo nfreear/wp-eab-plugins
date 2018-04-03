@@ -2,8 +2,8 @@
 
 /**
  * Plugin Name: Global Accessibility Awareness Day widget
- * Plugin URI:  https://github.com/nfreear/gaad-widget
- * Description: Shortcode and functionality to embed the GAAD widget ~ http://globalaccessibilityawarenessday.org
+ * Plugin URI:  https://github.com/nfreear/gaad-widget#wordpress
+ * Description: Embed the GAAD widget, via a WordPress shortcode, etc. ~ http://globalaccessibilityawarenessday.org
  * Author:      Nick Freear
  * Author URI:  https://twitter.com/nfreear
  * Version:     3.1.0-beta

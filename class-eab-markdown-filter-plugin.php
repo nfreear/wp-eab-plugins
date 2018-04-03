@@ -2,12 +2,11 @@
 
 /**
  * Plugin Name: EAB-Markdown Lite
- * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
- * Description: Filter to convert HTML headings, paragraphs and links to Markdown.
+ * Plugin URI:  https://github.com/nfreear/wp-eab-plugins#markdown-filter
+ * Description: Filter to convert HTML headings, paragraphs and links to text (Markdown text). (Supports PHP 5.2.x)
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
- * Version:     1.0-alpha
- * Text Domain: eab-bulletin
+ * Version:     1.0.0-alpha
  *
  * @package Nfreear\WP_EAB_Plugins
  * @copyright © Nick Freear, 12-, 31-March-2018.

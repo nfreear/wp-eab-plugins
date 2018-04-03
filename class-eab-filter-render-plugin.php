@@ -3,10 +3,10 @@
 /**
  * Plugin Name: EAB Filters
  * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
- * Description: Filters and rendering for the E-Access Bulletin.
+ * Description: Filters and HTML rendering for the E-Access Bulletin.
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
- * Version:     1.0-alpha
+ * Version:     1.0.0-alpha
  *
  * @package Nfreear\WP_EAB_Plugins
  * @copyright © Nick Freear, 11-November-2017.

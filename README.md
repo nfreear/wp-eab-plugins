@@ -17,6 +17,18 @@ publishing the E-Access Bulletin, via email and the Web.
 * [E-Access Bulletin archive][eab]
 * [Subscribe to the E-Access Bulletin newsletter][sub]
 
+### Post type
+
+WordPress custom [post type][]:  `eab_bulletin`
+
+### Archive shortcode
+
+WordPress [shortcode][]:  `[eab_archive]`
+
+### Markdown filter
+
+WordPress [filter][] to convert HTML to plain text/ Markdown:  `the_content_markdown`
+
 ## Install .. Test
 
 ```sh
@@ -51,5 +63,9 @@ _(E-Access Bulletin: © 2017 Headstar Ltd.)_
 [sub]: http://headstar.com/eablive/?page_id=80
 [EAB]: http://headstar.com/eab/archive.html "E-Access Bulletin archive (EAB)"
 [EAB Live]: http://headstar.com/eablive/ "E-Access Bulletin Live (EAB)"
+
+[post type]: https://codex.wordpress.org/Post_Types "WordPress post types."
+[shortcode]: https://codex.wordpress.org/shortcode "WordPress shortcodes."
+[filter]: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content "WordPress 'the_content' filter."
 
 [End]: //.

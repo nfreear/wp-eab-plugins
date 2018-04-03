@@ -3,10 +3,10 @@
 /**
  * Plugin Name: Phpinfo Admin page
  * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
- * Description: ...
+ * Description: Display lots of information about the PHP environment to developers.
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
- * Version:     1.0-alpha
+ * Version:     1.0.0-alpha
  *
  * @package Nfreear\WP_Plugins
  * @copyright © Nick Freear, 10-March-2018.

@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: EAB Archive shortcode
- * Plugin URI:  https://github.com/nfreear/wp-eab-plugins
- * Description: [eab_archive] shortcode for the E-Access Bulletin.
+ * Plugin URI:  https://github.com/nfreear/wp-eab-plugins#archive-shortcode
+ * Description: Generate the E-Access Bulletin archive page via a WordPress shortcode [eab_archive].
  * Author:      Nick Freear
  * Author URI:  https://github.com/nfreear
- * Version:     1.0-alpha
+ * Version:     1.0.0-alpha
  *
  * @package Nfreear\WP_EAB_Plugins
  * @copyright © Nick Freear, 10-March-2018.

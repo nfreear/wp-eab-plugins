@@ -1,7 +1,7 @@
 {
   "name": "nfreear/wp-eab-plugins",
   "type": "wordpress-plugin",
-  "description": "WordPress plugins for E-Access Bulletin. © Nick Freear.",
+  "description": "A collection of WordPress plugins for E-Access Bulletin. © Nick Freear.",
   "license": "proprietary",
   "keywords": [ "EAB" ],
   "time": "2017-11-06",

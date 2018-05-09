@@ -3,14 +3,14 @@
 /**
  * Plugin Name: Global Accessibility Awareness Day widget
  * Plugin URI:  https://github.com/nfreear/gaad-widget#wordpress
- * Description: Embed the GAAD widget, via a WordPress shortcode, etc. ~ http://globalaccessibilityawarenessday.org
+ * Description: Embed the GAAD widget, do_action( 'gaad_widget' ) ~ http://globalaccessibilityawarenessday.org
  * Author:      Nick Freear
  * Author URI:  https://twitter.com/nfreear
- * Version:     3.1.0-beta
+ * Version:     3.2.1-^3
  *
  * @package     Nfreear\WP_GAAD_Plugins
  * @license     https://nfreear.mit-license.org MIT License
- * @copyright   © 2017 Nick Freear, 14-May-2017.
+ * @copyright   © 2017 Nick Freear, 14-May-2017, 07-May-2018.
  * @link        https://gist.github.com/nfreear/e5520adbb930e537ef5fe2e0aab231d1#
  * @link        http://globalaccessibilityawarenessday.org/
  */
@@ -21,40 +21,33 @@ if ( ! function_exists( 'wp_add_inline_script' ) ) { // WP < v 4.5.0.
 
 class GAAD_Widget_Plugin {
 
-	const SHORTCODE  = 'GAAD';
+	const ACTION     = 'gaad_widget';
 	const TEMPLATE   = '<div id="id-gaad-widget"></div>';
-	const VERSION    = '3.1.0-beta';
-	const SCRIPT_URL = 'https://unpkg.com/gaad-widget@%s/build/gaad-widget.js';
+	const VERSION    = '^3';
+	const SCRIPT_URL = 'https://unpkg.com/gaad-widget@%s/dist/gaad-widget.min.js';
+
+	const CONFIG_PRE = 'GAAD_W_';
+	static private $options = array( 'days_before', 'days_after', 'lang', 'debug' );
 
 	private $wp_head = false;
 
 	public function __construct() {
 		$this->wp_head = self::get_option( 'gaad_widget_wp_head' );
 
-		add_shortcode( self::SHORTCODE, array( &$this, 'shortcode' ) );
+		add_action( self::ACTION, array( &$this, 'widget_action' ) );
+
 		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ) );
-		add_filter( 'script_loader_tag', array( &$this, 'script_loader_tag' ), 10, 2 );
+		// add_filter( 'script_loader_tag', array( &$this, 'script_loader_tag' ), 10, 2 );
 
 		if ( $this->wp_head ) {
-			add_action( 'wp_head', array( &$this, 'wp_head' ) );
+			// add_action( 'wp_head', array( &$this, 'wp_head' ) );
 		}
 	}
 
-	public function wp_head( $name ) {
-		self::debug( array( __FUNCTION__, $name ) );
+	public function widget_action( $arg = '' ) {
+		// self::debug( array( __FUNCTION__, $arg ) );
 
 		echo self::TEMPLATE;
-	}
-
-	public function shortcode( $attrs = array(), $content = null ) {
-		$inp = (object) shortcode_atts(
-			array(
-				'days_before' => self::get_option( 'gaad_widget_days_before', 15 ),
-				'days_after'  => self::get_option( 'gaad_widget_days_after', 10 ),
-			), $attrs
-		);
-
-		return self::TEMPLATE . $content;
 	}
 
 	public function enqueue_scripts() {
@@ -73,12 +66,12 @@ class GAAD_Widget_Plugin {
 		$in_footer = true;
 		$result    = wp_enqueue_script( 'gaad-widget', $script_url, array( 'jquery' ), $ver, $in_footer );
 
-		if ( ! $this->wp_head ) {
+		/* if ( ! $this->wp_head ) {
 			$tpl = addslashes( self::TEMPLATE );
 			// wp_enqueue_script( 'gaad-widget-inj', '_404_#-gaad-widget-xxx.js', [ 'jquery' ], $ver = false, $in_footer = true );
 			$position = 'before';
 			wp_add_inline_script( 'gaad-widget', "jQuery('#masthead').after('$tpl');console.warn('WP:gaad-widget')", $position );
-		}
+		} */
 		return $result;
 	}
 

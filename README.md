@@ -29,6 +29,20 @@ WordPress [shortcode][]:  `[eab_archive]`
 
 WordPress [filter][] to convert HTML to plain text/ Markdown:  `the_content_markdown`
 
+## GAAD widget plugin
+
+Typical usage ~ `wp-content/themes/../header.php`:
+
+```php
+<div id="container">
+
+<?php do_action( 'gaad_widget' ) ?>
+```
+
+## PHPList shortcode
+
+WordPress [shortcode][]:  `[phplist id=1 ] Intro text... [/phplist]`
+
 ## Install .. Test
 
 ```sh
